@@ -50,7 +50,7 @@ const getEmployee= async (req,res,next)=>{
 
   
   const params=[employee_id];
-  const sql = "update employee_management.employee set is_deleted=1 where employee_id=$1";
+  const sql = "update employee_management.employee set is_deleted=1 where employee_id=$1 RETURNING employee_id,first_name,last_name,is_deleted";
 
   
   
