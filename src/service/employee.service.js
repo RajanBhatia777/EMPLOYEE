@@ -1,15 +1,26 @@
 const conn=require('../config')
+const  empSchema= require('../employeeValidation')
 const addEmployee =async (req,res,next)=>{
     const {first_name,last_name}= req.body;
+
+     
+    try{
+    const value =await empSchema.validateAsync({first_name,last_name});
+    
     
    const params =[first_name,last_name];
-     const sql = "INSERT INTO employee_management.employee(first_name,last_name,is_deleted) VALUES($1,$2,0) RETURNING employee_id,first_name,last_name,is_deleted";
+     const sql = "INSERT INTO employee_management.employee(first_name,last_name) VALUES($1,$2) RETURNING employee_id,first_name,last_name,is_deleted";
    const result =   await conn.query(sql,params)
     console.log(result)
 
    res.send(result.rows)
-
-       
+   
+      
+  }
+  catch(err){
+    res.send(err)
+    
+    }
    
 };
 
