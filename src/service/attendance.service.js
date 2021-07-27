@@ -11,9 +11,6 @@ const time=async ()=>{
     return a;
 
 }
-
-
-
 const loginemployee =async (req,res,next)=>{
 
     try{
@@ -22,7 +19,6 @@ const loginemployee =async (req,res,next)=>{
     const {first_name,last_name,email_id,phone_number,password}= req.body;
 
     const hash= await bcrypt.hash(password,10)
-
     
     const loginTime=await time()
     const params =[first_name,last_name,email_id,phone_number,hash,loginTime];
