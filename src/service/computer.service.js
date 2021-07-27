@@ -4,18 +4,21 @@ const addComputer =async (req,res,next)=>{
   const {computer_serial_number,employee_id}= req.body;
 
   try{
-  const value= await comSchema.validateAsync({computer_serial_number})
+       const value= await comSchema.validateAsync({computer_serial_number})
+       
+       const params =[computer_serial_number,employee_id];
+       
+       const sql = "INSERT INTO employee_management.allocated_computers(computer_serial_number,employee_id) VALUES($1,$2) RETURNING allocated_computer_id,computer_serial_number,employee_id,is_deleted";
+       const result =   await conn.query(sql,params)
+       console.log(result)
 
-    const params =[computer_serial_number,employee_id];
-     const sql = "INSERT INTO employee_management.allocated_computers(computer_serial_number,employee_id) VALUES($1,$2) RETURNING allocated_computer_id,computer_serial_number,employee_id,is_deleted";
-   const result =   await conn.query(sql,params)
-    console.log(result)
-
-   res.send(result.rows)
-  }
-  catch(err){
-    res.send(err)
-  }
+       res.send(result.rows)
+       
+      
+     }
+ catch(err){
+       res.send(err)
+     }
 };
 const getComputer =async (req,res,next)=>{
   const {allocated_computer_id}= req.params;
