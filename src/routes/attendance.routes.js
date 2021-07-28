@@ -7,6 +7,8 @@ router.post('/loginemployee',controller.loginemployee);
 
 router.put('/logoutemployee/:employee_id',controller.logoutemployee);
 
+router.get('/getLoginTime/:employee_id',controller.getLoginTime);
+
 
 
 
