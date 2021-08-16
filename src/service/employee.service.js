@@ -1,45 +1,46 @@
-const conn = require('../config')
-const empSchema = require('../employeeValidation')
+/* eslint-disable no-unused-vars */
+/* eslint-disable camelcase */
+const conn = require('../config');
 
-
-
-const addEmployee = async ({first_name, last_name}) => {
-    
+const addEmployee = async ({ first_name, last_name }) => {
   const params = [first_name, last_name];
-    const sql = "INSERT INTO employee_management.employee(first_name,last_name) VALUES($1,$2) RETURNING employee_id,first_name,last_name,is_deleted";
-    const {rows} = await conn.query(sql, params)
-    console.log(rows)
-    return rows;
+  const sql = 'INSERT INTO employee_management.employee(first_name,last_name) VALUES($1,$2) RETURNING employee_id,first_name,last_name,is_deleted';
+  const { rows } = await conn.query(sql, params);
+  console.log(rows);
+  return rows;
 };
-const getEmployee = async ({employee_id}) => {
- 
+const getEmployee = async ({ employee_id }) => {
   const params = [employee_id];
-  const sql = "select * from employee_management.employee where employee_id=$1";
-  const { rows } = await conn.query(sql, params)
-  //const result= await conn.query(sql,params) we use result also
- return rows;
+  const sql = 'select * from employee_management.employee where employee_id=$1';
+  const { rows } = await conn.query(sql, params);
+  // const result= await conn.query(sql,params) we use result also
+  return rows;
+};
+const getAllEmployee = async ({ limit, offset }) => {
+  const pagingString = limit && offset ? `LIMIT ${limit} OFFSET ${offset}` : '';
 
-}
-const putEmployee = async ({first_name, last_name,employee_id}) => {
-  
-
+  const sql = `select * from employee_management.employee where is_deleted=0 order by employee_id desc ${pagingString}`;
+  const { rows } = await conn.query(sql);
+  // const result= await conn.query(sql,params) we use result also
+  console.log(rows);
+  return rows;
+};
+const putEmployee = async ({ first_name, last_name, employee_id }) => {
   const params = [first_name, last_name, employee_id];
-  const sql = "update employee_management.employee set first_name =$1 ,last_name=$2 where employee_id=$3 RETURNING employee_id,first_name,last_name";
+  const sql = 'update employee_management.employee set first_name =$1 ,last_name=$2 where employee_id=$3 RETURNING employee_id,first_name,last_name';
 
-  const {rows} = await conn.query(sql, params)
-  //const result= await conn.query(sql,params) we use result also 
+  const { rows } = await conn.query(sql, params);
+  // const result= await conn.query(sql,params) we use result also
   return rows;
-}
+};
 
-const deleteEmployee = async ({employee_id}) => {
-  
+const deleteEmployee = async ({ employee_id }) => {
   const params = [employee_id];
-  const sql = "update employee_management.employee set is_deleted=1 where employee_id=$1 RETURNING employee_id,first_name,last_name,is_deleted";
-  const result = await conn.query(sql, params)
+  const sql = 'update employee_management.employee set is_deleted=1 where employee_id=$1 RETURNING employee_id,first_name,last_name,is_deleted';
+  const { rows } = await conn.query(sql, params);
   return rows;
-}
+};
 
-module.exports = { addEmployee, getEmployee, putEmployee, deleteEmployee };
-
-
-
+module.exports = {
+  addEmployee, getEmployee, putEmployee, deleteEmployee, getAllEmployee,
+};
