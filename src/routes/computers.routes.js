@@ -1,15 +1,17 @@
 const express = require('express');
+
 const router = express.Router();
 
 const controller = require('../controller/computer.controller');
 
-router.post('/addComputer',controller.addComputer);
+router.post('/addComputer', controller.addComputer);
 
-//router.get('/getComputer/:allocated_computer_id',controller.getComputer);
+router.get('/getComputer/:allocated_computer_id', controller.getComputer);
 
-//router.put('/updateComputer/:allocated_computer_id',controller.updateComputer);
+router.get('/getAllComputerData', controller.getAllComputerData);
 
-//router.delete('/deleteComputer/:allocated_computer_id',controller.deleteComputer)
+router.put('/updateComputer/:allocated_computer_id', controller.updateComputer);
 
+router.delete('/deleteComputer/:allocated_computer_id', controller.deleteComputer);
 
-module.exports=router;
+module.exports = router;
